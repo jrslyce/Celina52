@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Celina 52: Piss Jug Patrol</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <main id="stage-host" aria-label="Celina 52 Piss Jug Patrol 3D Viewport"></main>
+    <div id="world-labels" aria-hidden="true"></div>
+
+    <!-- BIG DIRECTIONAL RUN ARROW (BRAWLS / UFO / CASH-IN) -->
+    <div id="big-run-arrow" class="big-run-arrow hidden" aria-hidden="true">
+      <div class="big-arrow-badge">
+        <svg class="big-arrow-svg" id="big-run-arrow-svg" viewBox="0 0 48 48" aria-hidden="true">
+          <path
+            d="M8 18 L26 18 L26 8 L42 24 L26 40 L26 30 L8 30 Z"
+            fill="currentColor"
+            stroke="#0f172a"
+            stroke-width="3.5"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </div>
+      <div class="big-arrow-pill">
+        <span id="big-run-arrow-icon">👊</span>
+        <strong id="big-run-arrow-label">HELP JUGMAN!</strong>
+      </div>
+    </div>
+
+    <!-- REAL BUSY GAMES SLIME-IN STUDIO INTRO -->
+    <div id="studio-intro" class="studio-intro" role="region" aria-label="Real Busy Games Intro">
+      <div class="slime-curtain-wrap">
+        <svg class="slime-top-ooze" viewBox="0 0 430 150" preserveAspectRatio="none" aria-hidden="true">
+          <path
+            d="M0,0 L430,0 L430,44 C412,44 412,96 394,96 C376,96 378,52 356,52 C334,52 332,126 312,126 C292,126 292,58 268,58 C244,58 242,102 222,102 C202,102 204,48 180,48 C156,48 156,136 134,136 C112,136 112,56 88,56 C64,56 64,98 44,98 C24,98 22,48 0,48 Z"
+            fill="#00f3ff"
+            stroke="#02080d"
+            stroke-width="6"
+          />
+          <path
+            d="M44,58 C44,78 44,86 44,88 M134,64 C134,98 134,116 134,122 M222,60 C222,78 222,88 222,92 M312,62 C312,94 312,108 312,114 M394,54 C394,72 394,80 394,84"
+            stroke="rgba(255,255,255,0.58)"
+            stroke-width="4"
+            stroke-linecap="round"
+            fill="none"
+          />
+        </svg>
+
+        <div class="studio-logo-stage">
+          <div class="studio-slime-glow" aria-hidden="true"></div>
+          <img
+            src="/assets/real-busy-games-logo.png"
+            alt="Real Busy Games"
+            class="studio-logo-img"
+            width="420"
+            height="220"
+            fetchpriority="high"
+          />
+          <div class="studio-drips" aria-hidden="true">
+            <span class="slime-drop d1"></span>
+            <span class="slime-drop d2"></span>
+            <span class="slime-drop d3"></span>
+            <span class="slime-drop d4"></span>
+            <span class="slime-drop d5"></span>
+            <span class="slime-drop d6"></span>
+          </div>
+          <p class="studio-presents">PRESENTS</p>
+        </div>
+
+        <button type="button" id="skip-intro-btn" class="skip-intro-btn">
+          Tap to skip
+        </button>
+
+        <svg class="slime-bottom-edge" viewBox="0 0 430 130" preserveAspectRatio="none" aria-hidden="true">
+          <path
+            d="M0,0 L430,0 L430,42 C406,42 404,114 382,114 C360,114 360,46 336,46 C312,46 310,92 288,92 C266,92 266,34 240,34 C214,34 212,122 188,122 C164,122 164,44 138,44 C112,44 110,98 86,98 C62,98 62,38 38,38 C18,38 14,76 0,76 Z"
+            fill="#040c12"
+          />
+          <path
+            d="M0,76 C14,76 18,38 38,38 C62,38 62,98 86,98 C110,98 112,44 138,44 C164,44 164,122 188,122 C212,122 214,34 240,34 C266,34 266,92 288,92 C310,92 312,46 336,46 C360,46 360,114 382,114 C404,114 406,42 430,42"
+            fill="none"
+            stroke="#00f3ff"
+            stroke-width="8"
+            stroke-linecap="round"
+          />
+        </svg>
+      </div>
+    </div>
+
+    <!-- TITLE SCREEN OVERLAY -->
+    <section id="title-screen" class="overlay-screen" aria-label="Start Game">
+      <div class="title-layout">
+        <div class="logo-hero">
+          <img
+            src="/assets/logo.png"
+            alt="Celina 52: Piss Jug Patrol"
+            class="game-logo"
+            width="900"
+            height="754"
+            fetchpriority="high"
+          />
+          <h1 class="sr-only">Celina 52: Piss Jug Patrol</h1>
+        </div>
+
+        <div class="asphalt-card title-card">
+          <div class="title-stats-row">
+            <div class="title-stat-pill">
+              <span aria-hidden="true">🏆</span>
+              <span>Best <strong id="title-best-score">0</strong></span>
+            </div>
+            <button type="button" id="open-shop-btn" class="cash-pill-btn">
+              <span aria-hidden="true">💵</span>
+              <span>Cash: <strong id="title-cash">$0</strong></span>
+              <span class="pill-cta">GEAR</span>
+            </button>
+          </div>
+
+          <p class="tagline">
+            Patrol Celina 52 Truck Stop! Haul trucker piss jugs, back up 8-ft Piss Jugman in brawls, bonk jug-stealing Aliens, and cash in at Colby’s counter for Scratch-Off Lotto Tickets!
+          </p>
+
+          <div class="worker-picker" role="radiogroup" aria-label="Choose your Celina 52 shift worker">
+            <div class="picker-header">
+              <span class="picker-label">Choose Your Shift Worker</span>
+              <span class="picker-sub">Tap to hear voice</span>
+            </div>
+            <div class="worker-options">
+              <button type="button" class="worker-option is-selected" data-worker="nevaeh" aria-pressed="true">
+                <div class="avatar-ring">
+                  <img id="title-nevaeh-img" alt="Nevaeh Petty 3D portrait" width="200" height="200" />
+                </div>
+                <span class="worker-name">Nevaeh</span>
+                <small>Lot Specialist</small>
+              </button>
+              <button type="button" class="worker-option" data-worker="janitor" aria-pressed="false">
+                <div class="avatar-ring">
+                  <img id="title-janitor-img" alt="Janitor 3D portrait" width="200" height="200" />
+                </div>
+                <span class="worker-name">Janitor</span>
+                <small>Jetpack Pro</small>
+              </button>
+              <button type="button" class="worker-option" data-worker="rodney" aria-pressed="false">
+                <div class="avatar-ring">
+                  <img id="title-rodney-img" alt="Rodney Bartow 3D portrait" width="200" height="200" />
+                </div>
+                <span class="worker-name">Rodney</span>
+                <small>Security Vet</small>
+              </button>
+            </div>
+          </div>
+
+          <button type="button" id="start-shift-btn" class="primary-btn">
+            <span aria-hidden="true">🚛</span>
+            CLOCK IN · 3:00 SHIFT
+          </button>
+
+          <button type="button" id="open-cast-btn" class="secondary-btn">
+            <span aria-hidden="true">👑</span>
+            MEET THE 3D CELINA 52 CAST (13 MODELS)
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3D CAST SHOWCASE NATIVE MODAL DIALOG -->
+    <dialog id="cast-dialog" class="celina-dialog" closedby="any" aria-labelledby="cast-dialog-title">
+      <div class="dialog-sheet">
+        <header class="dialog-header">
+          <div>
+            <span class="kicker">CELINA 52 · WEABER VALLEY</span>
+            <h2 id="cast-dialog-title">3D Cast Models</h2>
+          </div>
+          <form method="dialog">
+            <button type="submit" class="icon-btn" aria-label="Close 3D Cast Showcase">✕</button>
+          </form>
+        </header>
+
+        <div id="cast-3d-stage" class="cast-3d-stage" aria-label="Interactive 3D character turntable — drag to spin"></div>
+        <p class="cast-spin-hint">Drag to spin 3D model</p>
+
+        <div class="cast-info-box">
+          <div class="cast-info-top">
+            <div>
+              <h3 id="cast-model-name">Piss Jugman</h3>
+              <span id="cast-model-role" class="cast-role">Official 8-Ft Mascot</span>
+            </div>
+            <button type="button" id="cast-voice-btn" class="voice-sample-btn">🔊 Voice</button>
+          </div>
+          <p id="cast-model-bio" class="cast-bio"></p>
+        </div>
+
+        <div id="cast-pills" class="cast-pills" role="list"></div>
+
+        <form method="dialog" class="dialog-footer">
+          <button type="submit" class="primary-btn" autofocus>BACK TO LOT</button>
+        </form>
+      </div>
+    </dialog>
+
+    <!-- GEAR SHOP NATIVE MODAL DIALOG -->
+    <dialog id="shop-dialog" class="celina-dialog" closedby="any" aria-labelledby="shop-title">
+      <div class="dialog-sheet">
+        <header class="dialog-header">
+          <div>
+            <span class="kicker">COLBY’S BACKROOM COUNTER</span>
+            <h2 id="shop-title">Lot Gear &amp; Upgrades</h2>
+          </div>
+          <div class="dialog-header-right">
+            <div class="cash-balance-pill">💵 <strong id="shop-cash-balance">$0</strong></div>
+            <form method="dialog">
+              <button type="submit" class="icon-btn" aria-label="Close Gear Shop">✕</button>
+            </form>
+          </div>
+        </header>
+
+        <div id="shop-upgrades-list" class="shop-list"></div>
+
+        <form method="dialog" class="dialog-footer">
+          <button type="submit" class="primary-btn" autofocus>CLOSE</button>
+        </form>
+      </div>
+    </dialog>
+
+    <!-- IN-GAME HUD -->
+    <div id="game-hud" class="hidden">
+      <header class="hud-top-bar">
+        <div class="hud-pill clock-pill" id="hud-clock" aria-label="Time remaining">3:00</div>
+        <div class="hud-center-pills">
+          <div class="hud-pill score-pill">
+            <span class="hud-mini-label">PTS</span>
+            <strong id="hud-score">0</strong>
+          </div>
+          <div class="hud-pill jugs-pill">
+            <span class="hud-mini-label">JUGS</span>
+            <strong id="hud-jugs">0/10</strong>
+          </div>
+          <div class="hud-pill combo-pill hidden" id="hud-combo">x2</div>
+        </div>
+        <div class="hud-audio-btns">
+          <button type="button" class="icon-btn" id="music-btn" aria-label="Toggle music">
+            <span aria-hidden="true">🎵</span>
+          </button>
+          <button type="button" class="icon-btn" id="mute-btn" aria-label="Toggle sound and voices">
+            <span aria-hidden="true">🔊</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="top-banners">
+        <div id="event-banner" class="event-banner hidden" role="status" aria-live="polite"></div>
+
+        <aside id="voice-banner" class="voice-banner hidden" role="status" aria-live="polite">
+          <img id="voice-avatar" alt="Character portrait" width="200" height="200" />
+          <div class="voice-bubble">
+            <span class="voice-name" id="voice-name">Piss Jugman</span>
+            <p id="voice-text"></p>
+          </div>
+        </aside>
+      </div>
+
+      <!-- One-finger floating joystick -->
+      <div id="joystick-zone" class="joystick-zone" aria-label="Drag anywhere to move">
+        <div id="joystick-base" class="joystick-base">
+          <div id="joystick-knob" class="joystick-knob"></div>
+        </div>
+      </div>
+
+      <!-- Contextual Brawl / Bonk Alien / Cash-In Button -->
+      <div class="controls-bar">
+        <button type="button" id="action-btn" class="action-btn hidden">
+          👊 WHACK TROUBLEMAKER!
+        </button>
+      </div>
+
+      <p class="desktop-hint">
+        WASD / Arrows or Drag to run · Space / E to Whack Brawlers &amp; Bonk Aliens · Step on green mat to Cash In Jugs!
+      </p>
+    </div>
+
+    <!-- END-OF-SHIFT GAS STATION SCRATCHER LOTTO COUNTER -->
+    <section id="scratcher-screen" class="overlay-screen hidden" aria-label="Colby's Scratcher Lotto Counter">
+      <div class="asphalt-card scratcher-card">
+        <div class="scratcher-header">
+          <img id="scratcher-colby-img" class="colby-thumb" alt="Colby Kappleman 3D portrait" width="200" height="200" />
+          <div class="scratcher-header-copy">
+            <span class="kicker">URINE JUG EXCHANGE · GAS STATION COUNTER</span>
+            <h2>Scratch Your Lotto Tickets!</h2>
+            <p id="scratcher-summary-line"></p>
+          </div>
+        </div>
+
+        <div class="scratcher-meta-row">
+          <span id="scratcher-ticket-counter" class="ticket-counter-pill">TICKET 1 OF 4</span>
+          <span class="cash-won-pill">REAL MONEY WON: <strong id="scratcher-cash-total">$0</strong></span>
+        </div>
+
+        <div class="ticket-frame">
+          <div class="ticket-top">
+            <h3 id="scratcher-ticket-title">WEABER VALLEY MILLIONS</h3>
+            <p id="scratcher-ticket-sub">Match 3 Symbols to Win Real Cash!</p>
+          </div>
+
+          <div class="scratch-area">
+            <div id="scratcher-symbols-grid" class="scratch-grid"></div>
+            <canvas
+              id="scratcher-foil-canvas"
+              class="scratch-canvas"
+              width="340"
+              height="240"
+              aria-label="Scratch-off metallic foil area"
+            ></canvas>
+          </div>
+        </div>
+
+        <p id="scratcher-result-banner" class="scratcher-result-banner" role="status" aria-live="polite">
+          Rub with your finger or mouse to scratch off the foil!
+        </p>
+
+        <div class="scratcher-actions">
+          <button type="button" id="scratcher-reveal-btn" class="secondary-btn">
+            🪙 QUICK SCRATCH TICKET
+          </button>
+          <button type="button" id="scratcher-next-btn" class="primary-btn hidden">
+            NEXT TICKET →
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- FINAL PAYDAY & SHIFT REPORT CARD -->
+    <section id="gameover-screen" class="overlay-screen hidden" aria-label="Shift Payday Report">
+      <div class="asphalt-card report-card">
+        <span class="kicker">CELINA 52 SHIFT COMPLETE!</span>
+        <div class="report-cash-badge" id="report-cash-badge">💵 +$0 REAL MONEY WON!</div>
+
+        <div class="grade-row">
+          <img id="report-jugman-img" alt="Piss Jugman 3D portrait" width="200" height="200" />
+          <div class="grade-badge" id="report-grade">A</div>
+        </div>
+
+        <h2>Shift Payday Report</h2>
+        <p class="report-verdict" id="report-verdict"></p>
+
+        <dl class="stats-grid">
+          <div class="stat-box">
+            <dt>Shift Score</dt>
+            <dd id="stat-score">0</dd>
+          </div>
+          <div class="stat-box">
+            <dt>Real Money</dt>
+            <dd id="stat-cash">$0</dd>
+          </div>
+          <div class="stat-box">
+            <dt>Jugs Hauled</dt>
+            <dd id="stat-jugs">0</dd>
+          </div>
+          <div class="stat-box">
+            <dt>Brawls &amp; UFOs</dt>
+            <dd id="stat-brawls">0</dd>
+          </div>
+        </dl>
+
+        <button type="button" id="replay-btn" class="primary-btn">
+          🚛 WORK ANOTHER 3:00 SHIFT
+        </button>
+        <div class="report-secondary-row">
+          <button type="button" id="report-shop-btn" class="secondary-btn">💵 Spend Cash on Gear</button>
+          <button type="button" id="back-title-btn" class="secondary-btn">Switch Worker</button>
+        </div>
+      </div>
+    </section>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
