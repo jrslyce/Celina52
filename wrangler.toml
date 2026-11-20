@@ -1,0 +1,8 @@
+name = "celina52-piss-jug-patrol"
+compatibility_date = "2025-02-01"
+pages_build_output_dir = "dist"
+
+[[d1_databases]]
+binding = "LEADERBOARD_DB"
+database_name = "celina52-leaderboard"
+database_id = "966f629a-d830-4c47-a204-86685a44b2ce"

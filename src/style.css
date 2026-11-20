@@ -1114,6 +1114,190 @@ body {
   gap: 0.5rem;
 }
 
+/* Global Hall of Fame & 3-Letter Arcade Initials Form */
+.initials-form {
+  background: rgba(7, 12, 24, 0.72);
+  border: 1.5px solid rgba(250, 204, 21, 0.36);
+  border-radius: 16px;
+  padding: 0.65rem 0.7rem 0.55rem;
+  margin-bottom: 0.7rem;
+  text-align: left;
+}
+
+.initials-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+  margin-bottom: 0.4rem;
+}
+
+.initials-row {
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
+}
+
+.initials-input {
+  flex: 1;
+  min-inline-size: 0;
+  min-block-size: 46px;
+  padding: 0.4rem 0.7rem;
+  border-radius: 12px;
+  border: 2px solid rgba(250, 204, 21, 0.55);
+  background: rgba(5, 9, 20, 0.88);
+  color: #fefce8;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 1.3rem;
+  font-weight: 900;
+  letter-spacing: 0.4em;
+  text-align: center;
+  text-transform: uppercase;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.initials-input[aria-invalid="true"] {
+  border-color: #f87171;
+}
+
+.initials-submit-btn {
+  appearance: none;
+  flex-shrink: 0;
+  min-block-size: 46px;
+  padding: 0.45rem 0.9rem;
+  border-radius: 12px;
+  border: 2px solid #bae6fd;
+  background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
+  color: #052033;
+  font: inherit;
+  font-size: 0.76rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.initials-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.initials-submit-btn.is-saved {
+  border-color: #86efac;
+  background: linear-gradient(180deg, #4ade80 0%, #16a34a 100%);
+  color: #052e16;
+  opacity: 1;
+}
+
+.initials-status {
+  margin: 0.35rem 0 0;
+  min-block-size: 1rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #86efac;
+}
+
+.initials-status.is-error {
+  color: #fca5a5;
+}
+
+.leaderboard-panel {
+  background: rgba(7, 12, 24, 0.75);
+  border: 1.5px solid rgba(250, 204, 21, 0.32);
+  border-radius: 16px;
+  padding: 0.65rem;
+  margin-bottom: 0.8rem;
+  text-align: left;
+}
+
+.leaderboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.45rem;
+}
+
+.leaderboard-header h3 {
+  margin: 0;
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+}
+
+.leaderboard-rank-pill {
+  padding: 0.14rem 0.55rem;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #fde047 0%, #d97706 100%);
+  color: #111827;
+  font-size: 0.7rem;
+  font-weight: 900;
+}
+
+.leaderboard-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-block-size: 10.5rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+  overscroll-behavior: contain;
+}
+
+.lb-row {
+  display: grid;
+  grid-template-columns: 2.1rem 3.2rem 1fr auto;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.32rem 0.5rem;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid transparent;
+  font-size: 0.78rem;
+}
+
+.lb-row.is-current {
+  background: rgba(250, 204, 21, 0.22);
+  border-color: #fde047;
+}
+
+.lb-rank {
+  font-weight: 900;
+  color: var(--gold);
+}
+
+.lb-initials {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.9rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  color: #fff;
+}
+
+.lb-meta {
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #86efac;
+}
+
+.lb-score {
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  color: #fef08a;
+}
+
+.lb-empty {
+  padding: 0.55rem;
+  text-align: center;
+  font-size: 0.76rem;
+  color: rgba(226, 232, 240, 0.72);
+}
+
 /* Native Modal Dialogs (Modern Web Guidance compliant!) */
 dialog.celina-dialog {
   border: none;

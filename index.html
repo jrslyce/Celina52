@@ -362,6 +362,53 @@
           </div>
         </dl>
 
+        <!-- 3-CHARACTER INITIALS ENTRY FOR GLOBAL HALL OF FAME -->
+        <form
+          id="initials-form"
+          class="initials-form"
+          action="/api/leaderboard"
+          method="POST"
+          aria-labelledby="initials-heading"
+          novalidate
+        >
+          <label for="player-initials" id="initials-heading" class="initials-label">
+            Enter 3-Letter Initials for Global Hall of Fame
+          </label>
+          <div class="initials-row">
+            <input
+              type="text"
+              id="player-initials"
+              name="initials"
+              class="initials-input"
+              maxlength="3"
+              minlength="3"
+              pattern="[A-Za-z0-9]{3}"
+              required
+              autocorrect="off"
+              autocapitalize="characters"
+              spellcheck="false"
+              enterkeyhint="done"
+              placeholder="PJM"
+              aria-describedby="initials-status"
+            />
+            <button type="submit" id="save-initials-btn" class="initials-submit-btn">
+              POST SCORE
+            </button>
+          </div>
+          <p id="initials-status" class="initials-status" role="status" aria-live="polite"></p>
+        </form>
+
+        <!-- GLOBAL HALL OF FAME LEADERBOARD -->
+        <section class="leaderboard-panel" aria-labelledby="leaderboard-heading">
+          <div class="leaderboard-header">
+            <h3 id="leaderboard-heading">🌎 Celina 52 Global Hall of Fame</h3>
+            <span id="leaderboard-rank-pill" class="leaderboard-rank-pill hidden">#1</span>
+          </div>
+          <ol id="leaderboard-list" class="leaderboard-list">
+            <li class="lb-empty">Loading global scores…</li>
+          </ol>
+        </section>
+
         <button type="button" id="replay-btn" class="primary-btn">
           🚛 WORK ANOTHER 3:00 SHIFT
         </button>

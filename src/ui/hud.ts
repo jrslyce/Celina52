@@ -6,6 +6,13 @@ import type { CastPortraitMap } from '../render/castPortraits';
 import { getNearbyAction, getShiftGrade } from '../sim/gameSim';
 import { COUNTER_POS } from '../sim/layout';
 import {
+  fetchGlobalLeaderboard,
+  loadSavedInitials,
+  sanitizeInitials,
+  submitGlobalScore,
+  type LeaderboardEntry,
+} from '../sim/leaderboard';
+import {
   UPGRADE_CATALOG,
   type PlayerProgression,
   type UpgradeId,
@@ -90,6 +97,13 @@ export class GameHud {
   private readonly statJugsEl = document.getElementById('stat-jugs')!;
   private readonly statBrawlsEl = document.getElementById('stat-brawls')!;
 
+  private readonly initialsForm = document.getElementById('initials-form') as HTMLFormElement;
+  private readonly initialsInput = document.getElementById('player-initials') as HTMLInputElement;
+  private readonly saveInitialsBtn = document.getElementById('save-initials-btn') as HTMLButtonElement;
+  private readonly initialsStatusEl = document.getElementById('initials-status')!;
+  private readonly leaderboardListEl = document.getElementById('leaderboard-list')!;
+  private readonly leaderboardRankPillEl = document.getElementById('leaderboard-rank-pill')!;
+
   private readonly titleNevaehImg = document.getElementById('title-nevaeh-img') as HTMLImageElement;
   private readonly titleJanitorImg = document.getElementById('title-janitor-img') as HTMLImageElement;
   private readonly titleRodneyImg = document.getElementById('title-rodney-img') as HTMLImageElement;
@@ -101,6 +115,20 @@ export class GameHud {
   private castGallery: CastGalleryViewer;
   private activeCastIndex = 0;
   private scratcherUi: ScratcherUiController;
+
+  // Global Hall of Fame Leaderboard state
+  private latestShiftSnapshot: {
+    score: number;
+    cashWon: number;
+    grade: string;
+    jugsCollected: number;
+    brawlsWon: number;
+    worker: PlayableWorkerId;
+  } | null = null;
+  private leaderboardEntries: LeaderboardEntry[] = [];
+  private submittedEntryId: number | null = null;
+  private submittedRank: number | null = null;
+  private isSubmittingScore = false;
 
   private readonly _screenPt = new Point();
   private readonly tagPool: HTMLDivElement[] = [];
@@ -116,6 +144,7 @@ export class GameHud {
 
     this.castGallery = new CastGalleryViewer(this.castStageHost);
     this.initCastGalleryUi();
+    this.initLeaderboardForm();
 
     this.scratcherUi = new ScratcherUiController(soundFx, {
       onTicketRevealed: (tk: ScratcherTicket) => {
@@ -313,13 +342,163 @@ export class GameHud {
 
   public showGameOverReport(state: GameState, cashWon: number): void {
     const { grade, verdict } = getShiftGrade(state.score, cashWon);
+    const totalBrawls = state.brawlsWon + state.aliensRepelled;
     this.reportGradeEl.textContent = grade;
     this.reportVerdictEl.textContent = verdict;
     this.reportCashBadgeEl.textContent = `💵 +$${cashWon} REAL MONEY WON!`;
     this.statScoreEl.textContent = String(state.score);
     this.statCashEl.textContent = `$${cashWon}`;
     this.statJugsEl.textContent = String(state.totalJugsCollected);
-    this.statBrawlsEl.textContent = `${state.brawlsWon + state.aliensRepelled}`;
+    this.statBrawlsEl.textContent = String(totalBrawls);
+
+    // Prepare 3-letter initials form & load Global Hall of Fame!
+    this.latestShiftSnapshot = {
+      score: state.score,
+      cashWon,
+      grade,
+      jugsCollected: state.totalJugsCollected,
+      brawlsWon: totalBrawls,
+      worker: state.workerChoice,
+    };
+    this.submittedEntryId = null;
+    this.submittedRank = null;
+    this.isSubmittingScore = false;
+    this.initialsInput.disabled = false;
+    this.initialsInput.value = loadSavedInitials();
+    this.initialsInput.removeAttribute('aria-invalid');
+    this.saveInitialsBtn.disabled = false;
+    this.saveInitialsBtn.classList.remove('is-saved');
+    this.saveInitialsBtn.textContent = 'POST SCORE';
+    this.initialsStatusEl.textContent = '';
+    this.initialsStatusEl.classList.remove('is-error');
+
+    void this.loadGlobalLeaderboard();
+  }
+
+  private initLeaderboardForm(): void {
+    this.initialsInput.addEventListener('input', () => {
+      const cleaned = sanitizeInitials(this.initialsInput.value);
+      if (this.initialsInput.value !== cleaned) {
+        this.initialsInput.value = cleaned;
+      }
+      this.initialsInput.setCustomValidity('');
+      this.initialsInput.removeAttribute('aria-invalid');
+      if (this.initialsStatusEl.classList.contains('is-error')) {
+        this.initialsStatusEl.textContent = '';
+        this.initialsStatusEl.classList.remove('is-error');
+      }
+    });
+
+    this.initialsForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (this.isSubmittingScore || this.submittedEntryId !== null || !this.latestShiftSnapshot) return;
+
+      const initials = sanitizeInitials(this.initialsInput.value);
+      this.initialsInput.value = initials;
+      if (initials.length !== 3) {
+        this.initialsInput.setAttribute('aria-invalid', 'true');
+        this.initialsStatusEl.classList.add('is-error');
+        this.initialsStatusEl.textContent = 'Please enter 3 letters or numbers (e.g. PJM).';
+        this.initialsInput.focus();
+        return;
+      }
+
+      this.isSubmittingScore = true;
+      this.saveInitialsBtn.disabled = true;
+      this.saveInitialsBtn.textContent = 'POSTING…';
+      this.initialsStatusEl.classList.remove('is-error');
+      this.initialsStatusEl.textContent = 'Posting to Celina 52 Global Hall of Fame…';
+
+      try {
+        const snap = this.latestShiftSnapshot;
+        const res = await submitGlobalScore({
+          initials,
+          score: snap.score,
+          cashWon: snap.cashWon,
+          grade: snap.grade,
+          jugsCollected: snap.jugsCollected,
+          brawlsWon: snap.brawlsWon,
+          worker: snap.worker,
+        });
+        this.submittedEntryId = res.entry.id;
+        this.submittedRank = res.rank;
+        this.leaderboardEntries = res.entries;
+        this.renderLeaderboard();
+
+        this.initialsInput.disabled = true;
+        this.saveInitialsBtn.classList.add('is-saved');
+        this.saveInitialsBtn.textContent = 'POSTED!';
+        this.initialsStatusEl.textContent = `🏆 Posted! ${initials} is #${res.rank} globally!`;
+      } catch (err) {
+        this.saveInitialsBtn.disabled = false;
+        this.saveInitialsBtn.textContent = 'POST SCORE';
+        this.initialsStatusEl.classList.add('is-error');
+        this.initialsStatusEl.textContent =
+          err instanceof Error ? err.message : 'Could not post score — try again.';
+      } finally {
+        this.isSubmittingScore = false;
+      }
+    });
+  }
+
+  private async loadGlobalLeaderboard(): Promise<void> {
+    this.leaderboardListEl.innerHTML = '<li class="lb-empty">Loading global scores…</li>';
+    this.leaderboardRankPillEl.classList.add('hidden');
+    try {
+      this.leaderboardEntries = await fetchGlobalLeaderboard();
+      this.renderLeaderboard();
+    } catch {
+      this.leaderboardListEl.innerHTML =
+        '<li class="lb-empty">Could not reach global leaderboard right now.</li>';
+    }
+  }
+
+  private renderLeaderboard(): void {
+    this.leaderboardListEl.innerHTML = '';
+    if (this.submittedRank !== null) {
+      this.leaderboardRankPillEl.classList.remove('hidden');
+      this.leaderboardRankPillEl.textContent = `YOU: #${this.submittedRank}`;
+    } else {
+      this.leaderboardRankPillEl.classList.add('hidden');
+    }
+
+    if (this.leaderboardEntries.length === 0) {
+      this.leaderboardListEl.innerHTML = '<li class="lb-empty">No scores posted yet — claim #1!</li>';
+      return;
+    }
+
+    const medals = ['🥇', '🥈', '🥉'];
+    let highlightedLi: HTMLLIElement | null = null;
+
+    this.leaderboardEntries.forEach((entry, idx) => {
+      const li = document.createElement('li');
+      const isMe = this.submittedEntryId !== null && entry.id === this.submittedEntryId;
+      li.className = `lb-row${isMe ? ' is-current' : ''}`;
+
+      const rankSpan = document.createElement('span');
+      rankSpan.className = 'lb-rank';
+      rankSpan.textContent = medals[idx] ?? `#${idx + 1}`;
+
+      const initialsSpan = document.createElement('span');
+      initialsSpan.className = 'lb-initials';
+      initialsSpan.textContent = entry.initials;
+
+      const metaSpan = document.createElement('span');
+      metaSpan.className = 'lb-meta';
+      metaSpan.textContent = `Grade ${entry.grade} · $${entry.cashWon}`;
+
+      const scoreSpan = document.createElement('span');
+      scoreSpan.className = 'lb-score';
+      scoreSpan.textContent = String(entry.score);
+
+      li.append(rankSpan, initialsSpan, metaSpan, scoreSpan);
+      this.leaderboardListEl.appendChild(li);
+      if (isMe) highlightedLi = li;
+    });
+
+    if (highlightedLi) {
+      (highlightedLi as HTMLLIElement).scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
   }
 
   private getPoolEl(pool: HTMLDivElement[], idx: number, className: string): HTMLDivElement {
